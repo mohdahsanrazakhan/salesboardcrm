@@ -12,7 +12,7 @@ const Dashboard = () => {
   // Fetch the data (NOTE: Replace with your actual API endpoint in the future)
   const fetchUsers = async () => {
     try {
-      const response = await fetch('https://dummyjson.com/c/11a4-5ad2-403a-9d4c');
+      const response = await fetch('https://dummyjson.com/c/0cb6-29fa-4df8-aeee');
       const data = await response.json();
       setUsers(data);
       setLoading(false);
@@ -114,10 +114,10 @@ const Dashboard = () => {
                 <thead className="text-sm text-gray-200 uppercase bg-gray-600">
                   <tr>
                     <th class="poppins-semibold px-6 py-3">Agents</th>
-                    <th class="poppins-semibold px-6 py-3 text-nowrap">IVA Verified</th>
-                    <th class="poppins-semibold px-6 py-3">DMP</th>
-                    <th class="poppins-semibold px-6 py-3">Charity</th>
-                    <th class="poppins-semibold px-6 py-3">Loan</th>
+                    <th class="poppins-semibold px-6 py-3 text-nowrap">Lead Verified</th>
+                    <th class="poppins-semibold px-6 py-3">Sales Pipeline</th>
+                    <th class="poppins-semibold px-6 py-3">Referral Source</th>
+                    <th class="poppins-semibold px-6 py-3">Financing Option</th>
                   </tr>
                 </thead>
                 <tbody id="target-table-body">
@@ -135,14 +135,14 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
-        <hr className="my-5 text-gray-400" />
+        {/* <hr className="my-5 text-gray-400" /> */}
         {/* User Dashboard */}
-        <section>
+        {/* <section>
           <h2 className="text-2xl mb-3">User Dashboard</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 items-center gap-5">
-            {/* <!-- Number of Leads --> */}
+          
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">Number of Leads</p>
@@ -154,9 +154,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- Total sales this month --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">Sales this month</p>
@@ -168,9 +168,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- IVA this month --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">IVA this month</p>
@@ -182,9 +182,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- DMP this month --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">DMP this month</p>
@@ -196,9 +196,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- Total Sales --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">Total Sales</p>
@@ -210,9 +210,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- Total IVA --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">Total IVA</p>
@@ -224,9 +224,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* <!-- Total DMP --> */}
+
             <div className="bg-white border-2 border-gray-300 w-full rounded-lg hover:shadow-lg transition-all 2s ease-in-out">
-              {/* <!-- Stats --> */}
+            
               <div className="flex justify-between items-start gap-7 p-5">
                 <div>
                   <p className="poppins-light text-lg text-slate-500 text-nowrap">Total DMP</p>
@@ -239,7 +239,7 @@ const Dashboard = () => {
             </div>
 
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   )

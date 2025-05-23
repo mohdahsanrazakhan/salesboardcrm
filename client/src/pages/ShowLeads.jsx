@@ -7,23 +7,54 @@ import TableLoader from '../components/TableLoader';
 import formatDate from '../utils/formatDate.js';
 import useLeads from '../hooks/useLeads';
 
+const fallbackUrl = 'https://dummyjson.com/c/9847-19a0-4219-ba2f';
+
 const ShowLeads = () => {
-  const { leads: fetchedLeads, loading } = useLeads(); // Use the custom hook
+  const { leads: fetchedLeads, loading, error } = useLeads(); // Use the custom hook
   const [leads, setLeads] = useState([]);
   const [sortOrder, setSortOrder] = useState('desc');
   const [sortField, setSortField] = useState('id');
   const [searchQuery, setSearchQuery] = useState('');
   const [leadsData, setLeadsData] = useState([]); // Store all leads here
   const [filters, setFilters] = useState({ assigned_user: '', is_active: '', lead_status: '', campaign: '' });
+  const [fallbackLoading, setFallbackLoading] = useState(false);
+  const [fallbackLeads, setFallbackLeads] = useState([]);
 
-  // Effect hook to set leads when fetchedLeads changes
+  // Effect hook to set leads when fetchedLeads changes or fallback is needed
   useEffect(() => {
-    if (fetchedLeads) {
-      const sortedData = [...fetchedLeads].sort((a, b) => b.id - a.id); // Sort leads by ID initially
-      setLeadsData(sortedData); // Set all leads data
-      setLeads(sortedData); // Display leads after sorting
+    // If leads are fetched and valid, use them
+    if (Array.isArray(fetchedLeads) && fetchedLeads.length > 0) {
+      const sortedData = [...fetchedLeads].sort((a, b) => b.id - a.id);
+      setLeadsData(sortedData);
+      setLeads(sortedData);
     }
-  }, [fetchedLeads]);
+    // If loading is done and there's an error or no valid leads, use fallback
+    else if (
+      !loading &&
+      (
+        error ||
+        !Array.isArray(fetchedLeads) ||
+        fetchedLeads.length === 0
+      )
+    ) {
+      setFallbackLoading(true);
+      fetch(fallbackUrl)
+        .then(res => res.json())
+        .then(data => {
+          const leadsArr = data.leads || data || [];
+          const sortedData = [...leadsArr].sort((a, b) => b.id - a.id);
+          setFallbackLeads(sortedData);
+          setLeadsData(sortedData);
+          setLeads(sortedData);
+        })
+        .catch(() => {
+          setFallbackLeads([]);
+          setLeadsData([]);
+          setLeads([]);
+        })
+        .finally(() => setFallbackLoading(false));
+    }
+  }, [fetchedLeads, loading, error]);
 
   const applyFilters = (field, value) => {
     setFilters((prev) => {
@@ -68,15 +99,15 @@ const ShowLeads = () => {
     } else {
       // Filter the leads based on the search query
       const filteredLeads = leadsData.filter(lead =>
-        lead.id.toString().includes(query) ||
-        lead.first_name.toLowerCase().includes(query.toLowerCase()) ||
-        lead.last_name.toLowerCase().includes(query.toLowerCase())
+        (lead.id && lead.id.toString().includes(query)) ||
+        (lead.first_name && lead.first_name.toLowerCase().includes(query.toLowerCase())) ||
+        (lead.last_name && lead.last_name.toLowerCase().includes(query.toLowerCase()))
       );
       setLeads(filteredLeads); // Update the leads with the filtered data
     }
   };
 
-  if (loading) {
+  if (loading || fallbackLoading) {
     return <TableLoader />;
   }
 
@@ -113,27 +144,39 @@ const ShowLeads = () => {
             <tbody id="leads-table-body">
               {leads.length > 0 ? (
                 leads.map((lead, index) => (
-                  <tr key={lead._id} className="odd:bg-white even:bg-gray-50 border-b dark:border-gray-700 border-gray-200">
+                  <tr key={lead._id || lead.id || index} className="odd:bg-white even:bg-gray-50 border-b dark:border-gray-700 border-gray-200">
                     <td className="poppins-semibold px-6 py-4">{index + 1}</td>
                     <td className="poppins-semibold px-6 py-4">
-                      {lead.firstName} {lead.lastName} - {lead.phoneNumber}
+                      {(lead.firstName || lead.first_name) || ''} {(lead.lastName || lead.last_name) || ''} - {lead.phone || lead.phone_number || ''}
                       <div className="flex flex-wrap gap-1 mt-1">
-                        <span className="text-blue-500 bg-blue-100 font-medium rounded-lg text-xs text-center me-1 px-[10px] py-[3px] cursor-pointer"
-                          onClick={() => applyFilters('assigned_user', lead.userId.name)}>{lead.userId.name}</span>
-                        <span className={`text-gray-900 font-medium rounded-lg text-xs px-[10px] py-[3px] text-center me-1 cursor-pointer ${lead.is_active === "Active" ? 'bg-green-100 !text-green-600' : 'bg-red-100 !text-red-600'}`}
-                          onClick={() => applyFilters('is_active', lead.isActive)}>
-                          {lead.isActive}
+                        <span
+                          className="text-blue-500 bg-blue-100 font-medium rounded-lg text-xs text-center me-1 px-[10px] py-[3px] cursor-pointer"
+                          onClick={() => applyFilters('assigned_user', lead.userId?.name || lead.assigned_user || lead.name)}
+                        >
+                          {lead.userId?.name || lead.assigned_user || lead.name}
                         </span>
-                        <span className="bg-cyan-100 text-cyan-600 font-medium rounded-lg text-xs px-[10px] py-[3px] text-center me-1 cursor-pointer"
-                          onClick={() => applyFilters('lead_status', lead.statusId.name)}>{lead.statusId.name}</span>
+                        <span
+                          className={`text-gray-900 font-medium rounded-lg text-xs px-[10px] py-[3px] text-center me-1 cursor-pointer ${
+                            (lead.is_active === "Active" || lead.isActive === "Active") ? 'bg-green-100 !text-green-600' : (lead.is_active === "Dead" || lead.isActive === "Dead") ? 'bg-red-100 !text-red-600' : ''
+                          }`}
+                          onClick={() => applyFilters('is_active', lead.isActive || lead.is_active)}
+                        >
+                          {lead.isActive || lead.is_active}
+                        </span>
+                        <span
+                          className="bg-cyan-100 text-cyan-600 font-medium rounded-lg text-xs px-[10px] py-[3px] text-center me-1 cursor-pointer"
+                          onClick={() => applyFilters('lead_status', lead.statusId?.name || lead.lead_status)}
+                        >
+                          {lead.statusId?.name || lead.lead_status}
+                        </span>
                       </div>
                     </td>
-                    <td className="poppins-semibold px-6 py-4">{formatDate(lead.createdAt)}</td>
-                    <td className="poppins-semibold px-6 py-4">{formatDate(lead.updatedAt)}</td>
-                    <td className="poppins-semibold px-6 py-4">{lead.userId.name}</td>
+                    <td className="poppins-semibold px-6 py-4">{formatDate(lead.createdAt || lead.created_at)}</td>
+                    <td className="poppins-semibold px-6 py-4">{formatDate(lead.updatedAt || lead.modified_at)}</td>
+                    <td className="poppins-semibold px-6 py-4">{lead.userId?.name || lead.assigned_user || lead.name}</td>
                     <td className="poppins-semibold px-6 py-4">{lead.transfer_to}</td>
                     <td className="poppins-semibold px-6 py-4 cursor-pointer">
-                      <Link to={`/edit-lead/${lead._id}`} title="Edit Lead">
+                      <Link to={`/edit-lead/${lead._id || lead.id || ''}`} title="Edit Lead">
                         <TbEdit size={24} className='text-gray-500' />
                       </Link>
                     </td>
