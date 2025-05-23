@@ -2,7 +2,7 @@ import React from 'react';
 import { TbEdit } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import TableLoader from '../components/TableLoader';
-import formatDate from '../utils/FormatDate';
+import formatDate from '../utils/formatDate';
 import useUserTypes from '../hooks/useUserTypes';
 
 const ShowUserTypes = () => {
