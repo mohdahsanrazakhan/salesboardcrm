@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaRegAddressBook } from 'react-icons/fa';
 import { TbEdit } from 'react-icons/tb';
 import { Link } from 'react-router-dom';

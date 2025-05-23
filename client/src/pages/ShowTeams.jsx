@@ -1,9 +1,8 @@
-import React from 'react';
 import { TbEdit } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import TableLoader from '../components/TableLoader';
 import { PiUserListLight, PiUsers } from "react-icons/pi";
-import formatDate from '../utils/FormatDate';
+import formatDate from '../utils/formatDate';
 import useTeams from '../hooks/useTeams';
 
 const ShowTeams = () => {

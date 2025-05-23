@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MdPhoneCallback, MdCall } from "react-icons/md";
 import { BsGlobe2 } from "react-icons/bs";
 import { PiUserListFill, PiUserCheckFill } from "react-icons/pi";

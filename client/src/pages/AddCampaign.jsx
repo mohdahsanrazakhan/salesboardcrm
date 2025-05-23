@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const AddCampaign = () => {

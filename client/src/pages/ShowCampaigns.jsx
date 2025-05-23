@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { TbList, TbEdit } from "react-icons/tb";
 import TableLoader from '../components/TableLoader';

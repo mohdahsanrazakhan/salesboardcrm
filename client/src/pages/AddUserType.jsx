@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+// import { useParams, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
-import useUserTypes from '../hooks/useUserTypes';
+// import useUserTypes from '../hooks/useUserTypes';
 
 const AddUserType = () => {
   const [userType, setUserType] = useState("");
